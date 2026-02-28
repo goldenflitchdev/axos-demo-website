@@ -68,10 +68,6 @@
   .card-hover { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
   .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.2); border-color: var(--fg-secondary); }
 
-  .agent-tab { transition: all 0.3s ease; }
-  .agent-tab.active { background: rgba(232, 156, 51, 0.12); border-color: var(--accent); color: var(--accent); }
-  .agent-content { display: none; animation: fade-in 0.4s ease; }
-  .agent-content.active { display: block; }
 
   .stat-value { font-variant-numeric: tabular-nums; }
 
@@ -337,7 +333,7 @@
 
     <div class="reveal rounded-2xl p-8 max-w-3xl mx-auto text-center" style="background: var(--fg-primary);">
       <div class="text-4xl mb-4">🛡️</div>
-      <h3 class="text-xl font-normal mb-2" style="color: #DDE5EE; font-family: 'Inter', sans-serif;">Zero Data Egress Architecture</h3>
+      <h3 class="text-xl font-medium mb-2" style="color: #DDE5EE; font-family: 'Inter', sans-serif;">Zero Data Egress Architecture</h3>
       <p class="text-sm max-w-lg mx-auto leading-relaxed" style="color: #A8B8C8;">No API calls to OpenAI, Anthropic, or any cloud LLM. Outbound-only network posture — zero inbound ports on your firewall. <strong style="color: #DDE5EE;">Your data never leaves your building.</strong></p>
       <button onclick="openDrawer(1)" class="btn-standard mt-5 px-5 py-2 rounded-full text-xs font-medium transition-all hover:opacity-90" style="background: #ffffff; border: 1px solid #e2e8f0; color: #1a1a1a;">Read Full Architecture →</button>
     </div>
@@ -353,29 +349,14 @@
       <p class="max-w-xl mx-auto" style="color: var(--fg-secondary);">Each agent has a distinct role. Together, they deliver examination-ready workpapers autonomously.</p>
     </div>
 
-    <div class="reveal flex flex-wrap justify-center gap-2 mb-8">
-      <button onclick="switchAgent(0)" class="btn-standard agent-tab active px-4 py-2.5 rounded-xl glass text-sm font-medium flex items-center gap-2" data-agent="0">
-        <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold" style="background: rgba(232,156,51,0.3); color: var(--accent);">1</span> Retrieval
-      </button>
-      <button onclick="switchAgent(1)" class="btn-standard agent-tab px-4 py-2.5 rounded-xl glass text-sm font-medium flex items-center gap-2" data-agent="1">
-        <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold" style="background: rgba(232,156,51,0.2); color: var(--accent);">2</span> TOE
-      </button>
-      <button onclick="switchAgent(2)" class="btn-standard agent-tab px-4 py-2.5 rounded-xl glass text-sm font-medium flex items-center gap-2" data-agent="2">
-        <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold" style="background: rgba(232,156,51,0.2); color: var(--accent);">3</span> TOD
-      </button>
-      <button onclick="switchAgent(3)" class="btn-standard agent-tab px-4 py-2.5 rounded-xl glass text-sm font-medium flex items-center gap-2" data-agent="3">
-        <span class="w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold" style="background: rgba(232,156,51,0.2); color: var(--accent);">4</span> Supervisor
-      </button>
-    </div>
-
-    <!-- Agent content panels -->
-    <div class="reveal">
-      <div class="agent-content active" data-agent="0">
+    <!-- Agent cards in folds -->
+    <div class="reveal space-y-20">
+      <div>
         <div class="grid lg:grid-cols-2 gap-6">
           <div class="glass rounded-2xl p-8">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center font-bold text-white">1</div>
-              <div><h3 class="font-normal text-lg" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Documentation Retrieval</h3><p class="text-xs" style="color: var(--fg-secondary);">Llama 3 70B — Read-Only Access</p></div>
+            <div class="flex items-end gap-4 mb-6">
+              <span class="text-4xl sm:text-5xl font-normal leading-none gradient-text" style="font-family: 'Inter', sans-serif;">1</span>
+              <div><h3 class="font-normal text-2xl sm:text-3xl" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Documentation Retrieval</h3><p class="text-xs" style="color: var(--fg-secondary);">Llama 3 70B — Read-Only Access</p></div>
             </div>
             <ul class="space-y-3 text-sm" style="color: var(--fg-primary);">
               <li class="flex gap-3"><span style="color: var(--accent);" class="mt-0.5">✓</span> OAuth 2.0 + mTLS secure API integration</li>
@@ -411,12 +392,12 @@
         </div>
       </div>
 
-      <div class="agent-content" data-agent="1">
+      <div>
         <div class="grid lg:grid-cols-2 gap-6">
           <div class="glass rounded-2xl p-8">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center font-bold text-white">2</div>
-              <div><h3 class="font-normal text-lg" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Test of Effectiveness</h3><p class="text-xs" style="color: var(--fg-secondary);">Mixtral 8×7B — Statistical + ML</p></div>
+            <div class="flex items-end gap-4 mb-6">
+              <span class="text-4xl sm:text-5xl font-normal leading-none gradient-text" style="font-family: 'Inter', sans-serif;">2</span>
+              <div><h3 class="font-normal text-2xl sm:text-3xl" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Test of Effectiveness</h3><p class="text-xs" style="color: var(--fg-secondary);">Mixtral 8×7B — Statistical + ML</p></div>
             </div>
             <ul class="space-y-3 text-sm" style="color: var(--fg-primary);">
               <li class="flex gap-3"><span style="color: var(--accent);" class="mt-0.5">✓</span> Cochran's formula sampling: 385 from 65,000</li>
@@ -453,12 +434,12 @@
         </div>
       </div>
 
-      <div class="agent-content" data-agent="2">
+      <div>
         <div class="grid lg:grid-cols-2 gap-6">
           <div class="glass rounded-2xl p-8">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center font-bold text-white">3</div>
-              <div><h3 class="font-normal text-lg" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Test of Design</h3><p class="text-xs" style="color: var(--fg-secondary);">Llama 3 70B — COSO Analysis</p></div>
+            <div class="flex items-end gap-4 mb-6">
+              <span class="text-4xl sm:text-5xl font-normal leading-none gradient-text" style="font-family: 'Inter', sans-serif;">3</span>
+              <div><h3 class="font-normal text-2xl sm:text-3xl" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Test of Design</h3><p class="text-xs" style="color: var(--fg-secondary);">Llama 3 70B — COSO Analysis</p></div>
             </div>
             <ul class="space-y-3 text-sm" style="color: var(--fg-primary);">
               <li class="flex gap-3"><span style="color: var(--accent);" class="mt-0.5">✓</span> COSO 2013 five-component framework mapping</li>
@@ -487,12 +468,12 @@
         </div>
       </div>
 
-      <div class="agent-content" data-agent="3">
+      <div>
         <div class="grid lg:grid-cols-2 gap-6">
           <div class="glass rounded-2xl p-8">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-bold text-white">4</div>
-              <div><h3 class="font-normal text-lg" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Supervisory Agent</h3><p class="text-xs" style="color: var(--fg-secondary);">Llama 3 70B — Orchestration + NLU — <span style="color: var(--accent);" class="font-semibold">$0 cost</span></p></div>
+            <div class="flex items-end gap-4 mb-6">
+              <span class="text-4xl sm:text-5xl font-normal leading-none gradient-text" style="font-family: 'Inter', sans-serif;">4</span>
+              <div><h3 class="font-normal text-2xl sm:text-3xl" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Supervisory Agent</h3><p class="text-xs" style="color: var(--fg-secondary);">Llama 3 70B — Orchestration + NLU — <span style="color: var(--accent);" class="font-semibold">$0 cost</span></p></div>
             </div>
             <ul class="space-y-3 text-sm" style="color: var(--fg-primary);">
               <li class="flex gap-3"><span style="color: var(--accent);" class="mt-0.5">✓</span> DAG-based workflow orchestration</li>
@@ -974,11 +955,6 @@ function closeDrawer(e) {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
 // Agent tabs
-function switchAgent(idx) {
-  document.querySelectorAll('.agent-tab').forEach(t => t.classList.toggle('active', Number(t.dataset.agent) === idx));
-  document.querySelectorAll('.agent-content').forEach(c => c.classList.toggle('active', Number(c.dataset.agent) === idx));
-}
-
 // Scroll reveal
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
