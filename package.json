@@ -1,0 +1,16 @@
+{
+  "name": "axos-demo-website",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.js",
+    "serve": "node build.js && python3 -m http.server 3847"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "marked": "^17.0.3"
+  }
+}
