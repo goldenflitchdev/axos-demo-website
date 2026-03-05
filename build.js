@@ -1,6 +1,11 @@
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const { marked } = require("marked");
+
+// Password protection: set SITE_PASSWORD env var or use default
+const SITE_PASSWORD = process.env.SITE_PASSWORD || "axos-demo";
+const PASSWORD_HASH = crypto.createHash("sha256").update(SITE_PASSWORD).digest("hex");
 
 const MD_DIR = (() => {
   const inDir = path.join(__dirname, "Axos-Demo-Plan");
@@ -177,7 +182,22 @@ const html = `<!DOCTYPE html>
 </style>
 </head>
 <body class="antialiased" style="background: var(--bg-primary); color: var(--fg-primary);">
-
+<script>window.SITE_PASSWORD_HASH = "${PASSWORD_HASH}";</script>
+<div id="password-gate" class="fixed inset-0 z-[200] flex items-center justify-center px-4" style="background: var(--bg-primary);">
+  <div class="w-full max-w-sm text-center">
+    <div class="mb-6">
+      <img src="assets/goldenflitch-logo.png" alt="Goldenflitch" class="h-10 w-auto object-contain mx-auto mb-4 opacity-90" />
+      <h2 class="text-xl font-normal mb-1" style="color: var(--fg-primary); font-family: 'Inter', sans-serif;">Protected</h2>
+      <p class="text-sm" style="color: var(--fg-secondary);">Enter the password to view this demo plan.</p>
+    </div>
+    <form id="password-form" class="space-y-4">
+      <input type="password" id="password-input" autocomplete="current-password" placeholder="Password" class="w-full px-4 py-3 rounded-xl border text-sm focus:outline-none focus:ring-2 focus:ring-offset-0" style="border-color: rgba(42,75,138,0.25); color: var(--fg-primary); background: #fff; --tw-ring-color: var(--accent);" />
+      <p id="password-error" class="text-xs text-red-600 hidden">Incorrect password. Try again.</p>
+      <button type="submit" class="btn-standard w-full px-4 py-3 rounded-full text-sm font-medium transition-all hover:opacity-90" style="background: var(--accent);">Enter</button>
+    </form>
+  </div>
+</div>
+<div id="main-content" style="display: none;">
 <!-- ═══════════ NAV ═══════════ -->
 <nav class="fixed top-0 left-0 right-0 z-50 glass-strong nav-caps" id="navbar">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -196,7 +216,10 @@ const html = `<!DOCTYPE html>
         <a href="#competitive" class="px-3 py-1.5 text-xs font-medium transition-colors rounded-lg hover:opacity-90" style="color: var(--fg-secondary);">Competitive</a>
         <a href="#sections" class="px-3 py-1.5 text-xs font-medium transition-colors rounded-lg hover:opacity-90" style="color: var(--fg-secondary);">All Sections</a>
       </div>
-      <a href="#sections" class="btn-standard px-4 py-2 text-xs font-medium rounded-full transition-all hover:opacity-90" style="background: var(--accent);">Explore Plan →</a>
+      <div class="flex items-center gap-2">
+        <a href="#" onclick="sessionStorage.removeItem('axos-unlocked'); location.reload(); return false;" class="text-[10px] font-medium px-2 py-1 rounded opacity-80 hover:opacity-100 transition-opacity" style="color: var(--fg-secondary);" title="Lock site">Lock</a>
+        <a href="#sections" class="btn-standard px-4 py-2 text-xs font-medium rounded-full transition-all hover:opacity-90" style="background: var(--accent);">Explore Plan →</a>
+      </div>
     </div>
   </div>
 </nav>
@@ -840,7 +863,43 @@ window.addEventListener('scroll', () => {
     nav.style.boxShadow = 'none';
   }
 });
+
+// Password gate: show main if already unlocked
+(function() {
+  var gate = document.getElementById('password-gate');
+  var main = document.getElementById('main-content');
+  var form = document.getElementById('password-form');
+  var input = document.getElementById('password-input');
+  var err = document.getElementById('password-error');
+  if (sessionStorage.getItem('axos-unlocked') === 'true') {
+    if (gate) gate.style.display = 'none';
+    if (main) main.style.display = '';
+    return;
+  }
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var pwd = input && input.value;
+      if (!pwd) return;
+      crypto.subtle.digest('SHA-256', new TextEncoder().encode(pwd)).then(function(buf) {
+        var arr = Array.from(new Uint8Array(buf));
+        var hex = arr.map(function(b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+        if (hex === window.SITE_PASSWORD_HASH) {
+          sessionStorage.setItem('axos-unlocked', 'true');
+          if (gate) gate.style.display = 'none';
+          if (main) main.style.display = '';
+          if (err) err.classList.add('hidden');
+        } else {
+          if (err) { err.classList.remove('hidden'); err.textContent = 'Incorrect password. Try again.'; }
+          if (input) input.value = '';
+          input && input.focus();
+        }
+      });
+    });
+  }
+})();
 </script>
+</div>
 </body>
 </html>`;
 

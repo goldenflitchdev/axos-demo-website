@@ -10,6 +10,16 @@ npm run build    # → index.html
 npm run serve    # build + serve on http://localhost:3847
 ```
 
+### Password protection
+
+The site is protected by a password gate. Default password: **`axos-demo`**. To use a different password when building, set the `SITE_PASSWORD` environment variable:
+
+```bash
+SITE_PASSWORD=your-secret npm run build
+```
+
+Once unlocked, the session stays valid until the tab is closed (or use the **Lock** link in the nav to lock again).
+
 ## Deployment (Vercel)
 
 The repo is set up for Vercel: `vercel.json` defines the build and output.
